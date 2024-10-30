@@ -1,5 +1,6 @@
 streamlit
 openai
+anthropic
 gitpython
 python-dotenv
 pathlib
