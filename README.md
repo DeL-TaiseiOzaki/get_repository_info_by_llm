@@ -1,96 +1,68 @@
-# get_repository_info_by_llm
+# Repository Code Analyzer
 
-プログラミング関連ファイルを再帰的にスキャンし、内容を単一のテキストファイルにエクスポートするツールです。GitHubリポジトリまたはローカルディレクトリに対応しています。
+GitHubリポジトリやローカルディレクトリのコードを解析し、Claude AIを使って対話的にコードの理解を深めるためのツールです。
 
 ## 機能
 
-- GitHubリポジトリのクローンとスキャン
-- ローカルディレクトリのスキャン
-- 再帰的なファイル検索
-- 主要なプログラミング言語ファイルの検出
-- UTF-8/CP932エンコーディングの自動検出
-- 結果のテキストファイル出力
+- GitHubリポジトリのクローンと解析
+- ローカルディレクトリの解析
+- 指定した拡張子のファイル抽出
+- コード内容のテキスト抽出とダウンロード
+- Claude AIを使ったコードについての対話
+- Streamlit Web UI
+- Hugging Face Spaces対応
 
 ## 必要条件
 
-- Python 3.7以上
-- Git（GitHubリポジトリをスキャンする場合）
+- Python 3.8以上
+- Anthropic API Key
 
 ## インストール
 
-1. リポジトリをクローン
 ```bash
-git clone [このリポジトリのURL]
-cd directory-scanner
+git clone <your-repository-url>
+cd repository-code-analyzer
+pip install -r requirements.txt
 ```
 
-2. 必要なディレクトリを作成
+## 環境変数の設定
+
 ```bash
-mkdir output
+export ANTHROPIC_API_KEY="your-api-key"
 ```
 
 ## 使用方法
 
-### コマンドライン
-```bash
-# GitHubリポジトリをスキャン
-python main.py https://github.com/username/repository.git
+### Webインターフェース
 
-# ローカルディレクトリをスキャン
-python main.py /path/to/directory
+```bash
+streamlit run app.py
 ```
 
-### シェルスクリプトを使用
-```bash
-# スクリプトに実行権限を付与
-chmod +x scan.sh
+1. サイドバーでスキャン対象の拡張子を選択
+2. GitHubリポジトリのURLを入力
+3. スキャンを実行
+4. コードについて質問（最大5ターン）
 
-# GitHubリポジトリをスキャン
+### コマンドライン
+
+```bash
+# GitHubリポジトリの解析
 ./scan.sh https://github.com/username/repository.git
 
-# ローカルディレクトリをスキャン
-./scan.sh /path/to/directory
+# ローカルディレクトリの解析
+./scan.sh /path/to/local/directory
 ```
 
-## 出力形式
+## スキャン対象ファイル
 
-スキャン結果は `output` ディレクトリに保存され、以下の形式で出力されます：
+- プログラミング言語: `.py`, `.js`, `.ts`, `.java`, `.cpp`, `.hpp`, `.c`, `.h`, `.go`, `.rs`
+- 設定ファイル: `.json`, `.yml`, `.yaml`, `.toml`
+- ドキュメント: `.md`, `.txt`
 
-```
-#ファイルパス
-path/to/file.py
-------------
-ファイルの内容
-```
+## Hugging Face Spacesへのデプロイ
 
-## スキャン対象
-
-### 対象となるファイル拡張子
-- Python (.py)
-- JavaScript (.js)
-- Java (.java)
-- C/C++ (.c, .h, .cpp, .hpp)
-- Go (.go)
-- Rust (.rs)
-- PHP (.php)
-- Ruby (.rb)
-- TypeScript (.ts)
-- その他 (.scala, .kt, .cs, .swift, .m, .sh, .pl, .r)
-
-### 除外されるディレクトリ
-- .git
-- __pycache__
-- node_modules
-- venv
-- .env
-- build
-- dist
-- target
-- bin
-- obj
-
-## 注意事項
-
-- GitHubリポジトリをスキャンする場合、一時的にローカルにクローンされます
-- スキャン完了後、クローンされたリポジトリは自動的に削除されます
-- 大きなファイルや特殊なエンコーディングのファイルは読み取れない場合があります
+1. リポジトリをHugging Face Spacesに接続
+2. 環境変数`ANTHROPIC_API_KEY`を設定
+3. 依存関係が記述された`requirements.txt`を配置
+4. Streamlitアプリとして自動デプロイ
